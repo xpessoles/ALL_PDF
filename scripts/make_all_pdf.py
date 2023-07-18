@@ -192,6 +192,7 @@ def make_all_pdf():
         #print(f_pdf)
         #return f_pdf,liste_pdf
         if (f_pdf_1 not in liste_pdf) and (f_pdf_2 not in liste_pdf) :
+            #pass
 
             compile_file(d)
 
