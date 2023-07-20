@@ -181,6 +181,17 @@ def go():
             compile_file(d_new)
     save_liste_tex(new_tex_file)
 
+def diff_tex_file():
+    # comilation des fichiers modifiés
+    old_tex_file = load_liste_tex()
+    new_tex_file = make_tex_list(chemins)
+    i=0
+    for d_new in new_tex_file :
+        # On cherche si le fichier existe dans le fichier_sauvegarder
+        if d_new not in old_tex_file :
+            print(d_new)
+
+
 
 
 
