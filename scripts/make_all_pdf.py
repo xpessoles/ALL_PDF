@@ -169,14 +169,16 @@ def load_liste_tex() :
 
 
 def go():
+    # comilation des fichiers modifiés
     old_tex_file = load_liste_tex()
     new_tex_file = make_tex_list(chemins)
-
+    i=0
     for d_new in new_tex_file :
         # On cherche si le fichier existe dans le fichier_sauvegarder
-        for d_old in old_tex_file :
-            if d_old != d_new :
-                compile_file(d_new)
+        if d_new not in old_tex_file :
+            i=i+1
+
+            compile_file(d_new)
     save_liste_tex(new_tex_file)
 
 
@@ -196,8 +198,8 @@ def make_all_pdf():
 
             compile_file(d)
 
-make_all_pdf()
+#make_all_pdf()
 
-#go()
+go()
 #a = make_tex_list(chemins)
 #save_liste_tex(a)
