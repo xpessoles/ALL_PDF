@@ -66,7 +66,8 @@ def verif(root,file):
     "Cy_02_Ch_03_TD_02_SegwayVuibert",
     "Cy_02_Ch_03_TD_01_FauteuilDynamique",
     "Cy_03_01_Colle_05",
-    "Colle_06_PompeTurboMolecullaire"
+    "Colle_06_PompeTurboMolecullaire",
+    "qr"
     ]
     for t in test :
         if (t in root) or (t in file) :
@@ -162,14 +163,14 @@ def save_liste_tex(data) :
     file.close()
 
 def load_liste_tex() :
-    # Charter la liste des fichiers tex
+    # Charger la liste des fichiers tex
     file = open('tex_liste.save', 'rb')
     data = pickle.load(file)
     return data
 
 
 def go():
-    # comilation des fichiers modifiés
+    # compilation des fichiers modifiés
     old_tex_file = load_liste_tex()
     new_tex_file = make_tex_list(chemins)
     i=0
@@ -182,7 +183,7 @@ def go():
     save_liste_tex(new_tex_file)
 
 def diff_tex_file():
-    # comilation des fichiers modifiés
+    # affichage des fichiers modifiés
     old_tex_file = load_liste_tex()
     new_tex_file = make_tex_list(chemins)
     i=0
@@ -211,6 +212,7 @@ def make_all_pdf():
 
 #make_all_pdf()
 
+diff_tex_file()
 go()
 #a = make_tex_list(chemins)
 #save_liste_tex(a)
