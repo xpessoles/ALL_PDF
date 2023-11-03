@@ -19,6 +19,7 @@ chemins = [#"PSI_Cy_08_SystemesSequentiels",
         "../../PSI_Cy_05_Energetique",
         "../../PSI_Cy_06_ChaineSolides",
         "../../PSI_Cy_11_Statique_Revisions",
+        "../../PSI_Cy_12_Cinematique_Revisions",
         #"PSI_Cy_07_ResolutionNumerique"
         ]
 def make_tex_list(chemins:[str]):
