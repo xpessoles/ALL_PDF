@@ -45,7 +45,7 @@ def make_tex_list(chemins:[str]):
     return tex_liste
 
 def verif(root,file):
-    test = ["old","QCM","Headings","QCM","OLD",
+    test = ["old","QCM","Headings","QCM","OLD","xx","TODO","macros",
     "Cours","cours","Old",
     "Cy_01_Ch_01_Application",
     "Cy_01_Ch_02_05_App_01",
