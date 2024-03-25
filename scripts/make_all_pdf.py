@@ -7,6 +7,11 @@ import os
 import shutil
 import pickle
 
+## TODO :
+ # Sauvegarder l'historique de compilation a chaque fin de compil
+ # Modifier les noms des PDF pour pouvoir les parser
+ # Préciser le PC surlquel ont été compilés les fichiers ?
+##
 
 # On fait la liste des .tex d'un dossier.
 # On crée pour chaque .tex un dictionnaire :
@@ -69,7 +74,7 @@ def verif(root,file):
     "Cy_02_Ch_03_TD_01_FauteuilDynamique",
     "Cy_03_01_Colle_05",
     "Colle_06_PompeTurboMolecullaire",
-    "qr"
+    "qr",
     ]
     for t in test :
         if (t in root) or (t in file) :
@@ -178,11 +183,16 @@ def go():
     i=0
     for d_new in new_tex_file :
         # On cherche si le fichier existe dans le fichier_sauvegarder
+
         if d_new not in old_tex_file :
-            i=i+1
 
             compile_file(d_new)
-    save_liste_tex(new_tex_file)
+        ### AREVOIR SAUVEGARDE A CHAQUE ITeRATION CI DESSOUS CA MARCHE PAS
+
+        #On sauve la liste à chaque itération ### TEST ####
+        save_liste_tex(new_tex_file[:i])
+        old_tex_file = load_liste_tex()
+        i=i+1
 
 def diff_tex_file():
     # affichage des fichiers modifiés
