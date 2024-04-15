@@ -55,7 +55,7 @@ def make_dico_from_tex_file(root, file):
      - last_modif : dernière modification
      - chmein : chemin relatif du dossier
      - fichier : fichier.tex
-     % "{'classe':('PSI'),'chapitre':'chs_','type':('td'),'titre':'', 'source':'','comp':(''),'corrige':True}"
+     % "{'classe':('PSI'),'chapitre':'stat_','type':('td'),'titre':'', 'source':'','comp':('B2-14','C1-05','C2-07'),'corrige':True}"
     """
     fich = os.path.join(root, file)
     fich = fich.replace("\\","/")
