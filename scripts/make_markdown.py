@@ -55,7 +55,7 @@ def make_dico_from_tex_file(root, file):
      - last_modif : dernière modification
      - chmein : chemin relatif du dossier
      - fichier : fichier.tex
-     % "{'classe':('PSI'),'chapitre':'stat_','type':('td'),'titre':'', 'source':'','comp':('B2-14','C1-05','C2-07'),'corrige':True}"
+     % "{'classe':('PSI'),'chapitre':'cin_','type':('td'),'titre':'', 'source':'','comp':(''),'corrige':True}"
     """
     fich = os.path.join(root, file)
     fich = fich.replace("\\","/")
@@ -78,7 +78,7 @@ def make_dico_from_tex_file(root, file):
         # Creation du dico a partir de la premiere ligne du fichier
         line = line.rstrip()[1:]
         d = eval(line)
-        print(file)
+        #print(file)
         d = eval(d)
         for k,v in d.items():
             dico[k]=v
@@ -151,6 +151,27 @@ def diff_tex_file(machine):
             print(d_new)
 
 
+def make_nav(dico):
+    # On crée la nav du site
+    chap = []
+    for d in dico :
+        c = d['chapitre']
+        if c not in chap :
+            chap.append(c)
+
+        # Vérif que les fichiers ont un chapitre
+        if d['chapitre'] == '':
+            print(d['fichier'])
+            print(d['chapitre'])
+    return chap
+
 
 # Strucutre du site :
 a = make_tex_list(chemins)
+chap = make_nav(a)
+for c in chap :
+    if "" in c :
+        print(c)
+for d in a :
+    if "pdf" in d['chapitre']:
+        print(print(d['fichier']))
