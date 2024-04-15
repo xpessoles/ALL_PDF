@@ -55,7 +55,7 @@ def make_dico_from_tex_file(root, file):
      - last_modif : dernière modification
      - chmein : chemin relatif du dossier
      - fichier : fichier.tex
-     % "{'classe':(''),'chapitre':'','type':(''),'titre':'', 'source':' ','comp':(None),'corrige':True}"
+     % "{'classe':('PSI'),'chapitre':'chs_','type':('td'),'titre':'', 'source':'','comp':(''),'corrige':True}"
     """
     fich = os.path.join(root, file)
     fich = fich.replace("\\","/")
@@ -68,14 +68,17 @@ def make_dico_from_tex_file(root, file):
     line = fid.readline()
     fid.close()
     # On vérifie si le fichier a les tags sur la première ligne.
+
     if not 'type' in line :
         print(file)
         print(line)
+
 
     if 'type' in line :
         # Creation du dico a partir de la premiere ligne du fichier
         line = line.rstrip()[1:]
         d = eval(line)
+        print(file)
         d = eval(d)
         for k,v in d.items():
             dico[k]=v
@@ -119,87 +122,6 @@ def verif(root,file):
             return False
     return True
 
-def compile_file(dict):
-
-    # Compilation du sujet
-    # On copie la base
-    dest = dict["fichier"] # fichier.tex
-    dest = dest[:-4]+"_Sujet.tex"
-    shutil.copy("base.tex",dest)
-    print("==================================")
-    print(dest)
-
-
-    # On complete la base
-    fid = open(dest,"a")
-    fid.write("\\renewcommand{\\repExo}{"+dict["chemin"]+"} \n")
-    fid.write("\\graphicspath{{\\repStyle/png}{\\repExo/images}}")
-    fid.write("\\input{"+dict["full_chemin"]+"}\n \n")
-    fid.write("\\end{document}")
-    fid.close()
-
-    # On compile
-    os.system("pdflatex --shell-escape "+dest)
-    os.system("pdflatex --shell-escape "+dest)
-
-    src = dest[:-4]+".pdf"
-    dest = "../PDF/"+src
-    # On stocke
-    shutil.copy(src,dest)
-    # On efface tout les fichiers de compil
-    src = src[:-4]
-    for root, dirs, files in os.walk("."):
-        for file in files:
-            if file.startswith(src):
-
-                try :
-                    os.remove(file)
-                except :
-                    print(file)
-
-
-    #################################
-    # Compilation du corrigé
-    # On copie la base
-    dest = dict["fichier"] # fichier.tex
-    dest = dest[:-4]+"_Corrige.tex"
-    shutil.copy("base.tex",dest)
-    print("==================================")
-    print(dest)
-
-
-    # On complete la base
-    fid = open(dest,"a")
-    fid.write("\\proftrue \n")
-    fid.write("\\renewcommand{\\repExo}{"+dict["chemin"]+"} \n")
-    fid.write("\\graphicspath{{\\repStyle/png}{\\repExo/images}}")
-    fid.write("\\input{"+dict["full_chemin"]+"}\n \n")
-    fid.write("\\end{document}")
-    fid.close()
-
-    # On compile
-    os.system("pdflatex --shell-escape "+dest)
-    os.system("pdflatex --shell-escape "+dest)
-
-    src = dest[:-4]+".pdf"
-    dest = "../PDF/"+src
-    # On stocke
-    shutil.copy(src,dest)
-    # On efface tout les fichiers de compil
-    src = src[:-4]
-    for root, dirs, files in os.walk("."):
-        for file in files:
-            if file.startswith(src):
-
-                try :
-                    os.remove(file)
-                except :
-                    print(file)
-
-
-
-    return False
-
 
 def save_liste_tex(data,machine) :
     # Sauver la liste des fichiers tex
@@ -216,23 +138,7 @@ def load_liste_tex(machine) :
     return data
 
 
-def go(machine):
-    # compilation UNIQUEMENT des fichiers modifiés
-    old_tex_file = load_liste_tex(machine)
-    new_tex_file = make_tex_list(chemins,machine)
-    i=0
-    for d_new in new_tex_file :
-        # On cherche si le fichier existe dans le fichier_sauvegarder
 
-        if d_new not in old_tex_file :
-
-            compile_file(d_new)
-        ### AREVOIR SAUVEGARDE A CHAQUE ITeRATION CI DESSOUS CA MARCHE PAS
-
-        #On sauve la liste à chaque itération ### TEST ####
-        save_liste_tex(new_tex_file[:i])
-        old_tex_file = load_liste_tex()
-        i=i+1
 
 def diff_tex_file(machine):
     # affichage des fichiers modifiés
@@ -246,28 +152,5 @@ def diff_tex_file(machine):
 
 
 
-
-
-def make_all_pdf():
-    # Création de tous les PDF
-    tex_liste = make_tex_list(chemins)
-    liste_pdf = os.listdir("../PDF")
-
-    for d in tex_liste :
-
-        f_pdf_1 = d['fichier'][:-4]+'_Sujet.pdf'
-        f_pdf_2 = d['fichier'][:-4]+'_Corrige.pdf'
-        print(f_pdf_1,f_pdf_2)
-        #return f_pdf,liste_pdf
-        if (f_pdf_1 not in liste_pdf) and (f_pdf_2 not in liste_pdf) :
-            #pass
-
-            compile_file(d)
-
-
-make_all_pdf()
-
-#diff_tex_file(machine)
-#go()
-#a = make_tex_list(chemins)
-#save_liste_tex(a)
+# Strucutre du site :
+a = make_tex_list(chemins)
