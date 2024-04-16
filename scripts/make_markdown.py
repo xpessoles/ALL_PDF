@@ -173,5 +173,5 @@ for c in chap :
     if "" in c :
         print(c)
 for d in a :
-    if "pdf" in d['chapitre']:
+    if "stat_pds_2d" in d['chapitre']:
         print(print(d['fichier']))
