@@ -403,7 +403,8 @@ def write_comp(liste_dico_file,fid,chapitre):
     if len(liste_comp_chap) > 0 :
         fid.write("tags:\n")
         for c in liste_comp_chap:
-            fid.write("  - "+c+" : "+dico_comp[c]+"\n")
+            #fid.write("  - "+c+" : "+dico_comp[c]+"\n")
+            fid.write("  - "+c+"\n")
     return None
 
 
