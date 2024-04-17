@@ -331,12 +331,13 @@ def make_page_chapitre(liste_dico_file,dico_titre_chapitre,chapitre):
 
 
 
-    ## Titre de la page
+    ## Titre de la page & Compétences
     fid.write('---\n')
     fid.write('title: '+dico_titre_chapitre[chapitre]+" \n")
+    write_comp(liste_dico_file,fid,chapitre)
     fid.write('---\n\n')
 
-    write_comp(liste_dico_file,fid,chapitre)
+
 
     ## Le cours
     write_activite('cours',liste_dico_file,fid,chapitre)
@@ -390,13 +391,19 @@ def write_activite(activite,liste_dico_file,fid,chapitre) :
 def write_comp(liste_dico_file,fid,chapitre):
     #Recupère la liste des compétences d'un chapitre
     liste_comp_chap = []
+    print(chapitre)
     for file in liste_dico_file :
         if file['chapitre'] == chapitre :
-            print(">>"+file['fichier'])
             tuple_comp = file['comp']
             for c in tuple_comp :
-                liste_comp_chap.append(c)
-    print(liste_comp_chap)
+                if c not in liste_comp_chap :
+                    liste_comp_chap.append(c)
+
+            #print(file)
+    if len(liste_comp_chap) > 0 :
+        fid.write("tags:\n")
+        for c in liste_comp_chap:
+            fid.write("  - "+c+" : "+dico_comp[c]+"\n")
     return None
 
 
