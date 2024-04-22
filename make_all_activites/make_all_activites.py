@@ -38,6 +38,27 @@ def make_tex_list(chemins:[str]):
 
     return tex_liste
 
+def make_pdf_list(chemins:[str]):
+    """
+    Réalisation de la liste de tous les fichier tex.
+    REnvoie une liste de dictionnaires :
+    dico = {'fichier':file,'last_modif':modif:....}
+    """
+    pdf_liste=[]
+    for path in chemins :
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                if file.endswith(".pdf"):
+                    if verif(root,file) :
+                        #print(file)
+                        #dico = make_dico_from_tex_file(root, file)
+                        #dico = {}
+                        #dico["chemin"]=root
+                        #dico["fichier"]=file
+                        #dico["last_modif"] = os.path.getmtime(os.path.join(root, file))
+                        pdf_liste.append(file)
+    return pdf_liste
+
 def make_dico_from_tex_file(root, file):
     """
     Réalise un dictionnaire à partir d'un fichier tex
@@ -66,15 +87,12 @@ def make_dico_from_tex_file(root, file):
 
     comp = root.split("/")[-2][:5]
     comp.replace("_","-")
-    print(comp)
-    print(root)
+    #print(comp)
+    #print(root)
 
     #fid = open(fich,'r', encoding="utf8")
     #line = fid.readline()
     #fid.close()
-
-
-
 
     return dico
 
@@ -82,8 +100,11 @@ def verif(root,file):
     """
     Exclusion de fichiers
     """
-    test = ["STOCK","../../ExercicesCompetences/Outils"
-
+    test = ["STOCK",
+        "../../ExercicesCompetences/Outils",
+        "GPS_PPM_Colle_",
+        "ALL_EXOS",
+        "500_Vierge_Sujet",
     ]
     for t in test :
         if (t in root) or (t in file) :
@@ -169,8 +190,6 @@ def compile_file(dict):
 
 
 
-    return False
-
 
 def save_liste_tex(data,machine) :
     # Sauver la liste des fichiers tex
@@ -222,21 +241,20 @@ def diff_tex_file(machine):
 def make_all_pdf():
     # Création de tous les PDF
     tex_liste = make_tex_list(chemins)
-    liste_pdf = os.listdir("../PDF")
+
 
     for d in tex_liste :
-
+        liste_pdf = make_pdf_list(['../PDF'])
         f_pdf_1 = d['fichier'][:-4]+'_Sujet.pdf'
         f_pdf_2 = d['fichier'][:-4]+'_Corrige.pdf'
         print(f_pdf_1,f_pdf_2)
         #return f_pdf,liste_pdf
         if (f_pdf_1 not in liste_pdf) and (f_pdf_2 not in liste_pdf) :
             #pass
-
             compile_file(d)
 
 
-#make_all_pdf()
+make_all_pdf()
 
 
-tex_liste = make_tex_list(chemins)
+#tex_liste = make_tex_list(chemins)
