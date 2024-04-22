@@ -87,6 +87,7 @@ def make_dico_from_tex_file(root, file):
 
     comp = root.split("/")[-2][:5]
     comp.replace("_","-")
+    dico["comp"]=comp
     #print(comp)
     #print(root)
 
@@ -104,7 +105,8 @@ def verif(root,file):
         "../../ExercicesCompetences/Outils",
         "GPS_PPM_Colle_",
         "ALL_EXOS",
-        "500_Vierge_Sujet",
+        "500_Vierge",
+        "1100_Pneumatique"
     ]
     for t in test :
         if (t in root) or (t in file) :
@@ -116,7 +118,7 @@ def compile_file(dict):
     # Compilation du sujet
     # On copie la base
     dest = dict["fichier"] # fichier.tex
-    dest = dest[:-4]+"_Sujet.tex"
+    dest = dict['comp']+"_"+dest[:-4]+"_Sujet.tex"
     shutil.copy("base.tex",dest)
     print("==================================")
     print(dest)
@@ -154,7 +156,7 @@ def compile_file(dict):
     # Compilation du corrigé
     # On copie la base
     dest = dict["fichier"] # fichier.tex
-    dest = dest[:-4]+"_Corrige.tex"
+    dest = dict['comp']+"_"+dest[:-4]+"_Corrige.tex"
     shutil.copy("base.tex",dest)
     print("==================================")
     print(dest)
@@ -245,8 +247,8 @@ def make_all_pdf():
 
     for d in tex_liste :
         liste_pdf = make_pdf_list(['../PDF'])
-        f_pdf_1 = d['fichier'][:-4]+'_Sujet.pdf'
-        f_pdf_2 = d['fichier'][:-4]+'_Corrige.pdf'
+        f_pdf_1 = d['comp']+"_"+d['fichier'][:-4]+'_Sujet.pdf'
+        f_pdf_2 = d['comp']+"_"+d['fichier'][:-4]+'_Corrige.pdf'
         print(f_pdf_1,f_pdf_2)
         #return f_pdf,liste_pdf
         if (f_pdf_1 not in liste_pdf) and (f_pdf_2 not in liste_pdf) :
