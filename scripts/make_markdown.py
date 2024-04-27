@@ -246,6 +246,9 @@ def make_dico_from_tex_file(root, file):
         d = eval(d)
         for k,v in d.items():
             dico[k]=v
+    dico['depot'] = dico["chemin"][6:].split("/")[0]
+
+    dico['lien_git']="https://github.com/xpessoles/"+dico['depot']+"/tree/main"+dico["chemin"][6+len(dico['depot']):]
 
     return dico
 
@@ -382,9 +385,11 @@ def write_activite(activite,liste_dico_file,fid,chapitre) :
             fid.write("| "+td['titre']+ " | ")
             fid.write("[:fontawesome-solid-file-pdf:](http://xpessoles-cpge.fr/pdf/"+td['fichier'][:-4]+"_Sujet.pdf) | ")
             if td['corrige'] :
-                fid.write("[:fontawesome-solid-file-pdf:](http://xpessoles-cpge.fr/pdf/"+td['fichier'][:-4]+"_Corrige.pdf) | \n")
+                fid.write("[:fontawesome-solid-file-pdf:](http://xpessoles-cpge.fr/pdf/"+td['fichier'][:-4]+"_Corrige.pdf) | ")
             else:
-                fid.write("[:fontawesome-regular-file-pdf:](http://xpessoles-cpge.fr/pdf/"+td['fichier'][:-4]+"_Corrige.pdf) | \n")
+                fid.write("[:fontawesome-regular-file-pdf:](http://xpessoles-cpge.fr/pdf/"+td['fichier'][:-4]+"_Corrige.pdf) | ")
+
+        fid.write("[:material-github:]("+td["lien_git"]+") | \n")
 
     fid.write("\n")
 
@@ -431,6 +436,7 @@ liste_dico_file = make_tex_list(chemins)
 #make_page_chapitre(liste_dico_file,dico_titre_chapitre,"slci_laplace")
 
 for chapitre in liste_chapitres :
+    print(chapitre)
     make_page_chapitre(liste_dico_file,dico_titre_chapitre,chapitre)
 
 
