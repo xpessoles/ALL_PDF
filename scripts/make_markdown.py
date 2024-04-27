@@ -250,6 +250,9 @@ def make_dico_from_tex_file(root, file):
 
     dico['lien_git']="https://github.com/xpessoles/"+dico['depot']+"/tree/main"+dico["chemin"][6+len(dico['depot']):]
 
+    dico['raw_sujet']="https://github.com/xpessoles/ALL_PDF/raw/main/PDF/"+dico['fichier'][:-4]+'_Sujet.pdf'
+    dico['raw_corrige']="https://github.com/xpessoles/ALL_PDF/raw/main/PDF/"+dico['fichier'][:-4]+'_Corrige.pdf'
+
     return dico
 
 
@@ -383,9 +386,9 @@ def write_activite(activite,liste_dico_file,fid,chapitre) :
         fid.write("| :-------------- | :---: | :-----: | :------: | \n")
         for td in liste_td :
             fid.write("| "+td['titre']+ " | ")
-            fid.write("[:fontawesome-solid-file-pdf:](http://xpessoles-cpge.fr/pdf/"+td['fichier'][:-4]+"_Sujet.pdf) | ")
+            fid.write("[:fontawesome-solid-file-pdf:]("+td['raw_sujet']+") | ")
             if td['corrige'] :
-                fid.write("[:fontawesome-solid-file-pdf:](http://xpessoles-cpge.fr/pdf/"+td['fichier'][:-4]+"_Corrige.pdf) | ")
+                fid.write("[:fontawesome-solid-file-pdf:]() | ")
             else:
                 fid.write("[:fontawesome-regular-file-pdf:](http://xpessoles-cpge.fr/pdf/"+td['fichier'][:-4]+"_Corrige.pdf) | ")
 
