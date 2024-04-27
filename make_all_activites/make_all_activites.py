@@ -487,6 +487,16 @@ def creation_fichiers_activites(chap_comp,liste_dico_act):
 
 tex_liste = make_tex_list(chemins)
 #save_liste_tex(tex_liste,PC)
-nav = make_nav(tex_liste)
+#nav = make_nav(tex_liste)
 
-creation_fichiers_activites(nav,tex_liste)
+#creation_fichiers_activites(nav,tex_liste)
+def compte_activite(comp,tex_liste):
+    cpt = 0
+    for d in tex_liste :
+        if d['comp'] == comp.replace('-','_') :
+            cpt = cpt+1
+    return cpt
+
+for k,v in dico_comp.items():
+    cc = compte_activite(k,tex_liste)
+    print("| "+k+" | "+v+" | __"+str(cc)+"__ |")
