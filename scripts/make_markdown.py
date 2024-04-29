@@ -15,7 +15,7 @@ import pickle
 
 PC = "perso"
 
-liste_chapitres = ['chs_', 'chs_hs', 'chs_leq', 'cin_geo', 'cin_point', 'cin_va', 'dyn_', 'dyn_1d', 'dyn_cin', 'dyn_inertie', 'dyn_pfd', 'dyn_pfd_cf', 'dyn_pfd_co', 'dyn_pfd_vehicule', 'slci_ap', 'slci_blocs', 'slci_bode', 'slci_commande', 'slci_correcteur', 'slci_correcteurs', 'slci_laplace', 'slci_multiphy', 'slci_p', 'slci_pi', 'slci_precision', 'slci_rapidite', 'slci_revisions', 'slci_rp', 'slci_stabilite', 'slci_synthese', 'stat_frot', 'stat_mam', 'stat_pfs_2d', 'stat_pfs_3d', 'tec_', 'tec_1d', 'tec_3d', 'tec_jeq', 'tec_vehicule']
+liste_chapitres = ['chs_', 'chs_hs', 'chs_leq', 'cin_geo', 'cin_point', 'cin_va', 'dyn_', 'dyn_1d', 'dyn_cin', 'dyn_inertie', 'dyn_pfd', 'dyn_pfd_cf', 'dyn_pfd_co', 'dyn_pfd_vehicule', 'slci_ap', 'slci_blocs', 'slci_bode', 'slci_commande', 'slci_correcteur', 'slci_correcteurs', 'slci_laplace', 'slci_multiphy', 'slci_p', 'slci_pi', 'slci_precision', 'slci_rapidite', 'slci_revisions', 'slci_rp', 'slci_stabilite', 'slci_synthese', 'stat_frot', 'stat_mam', 'stat_pfs_2d', 'stat_pfs_3d', 'tec_', 'tec_1d', 'tec_3d', 'tec_jeq', 'tec_vehicule','num_ia']
 dico_titre_chapitre = {ch:"" for ch in liste_chapitres}
 dico_titre_chapitre = {
     'chs_': 'Théorie des mécanismes',
@@ -57,7 +57,8 @@ dico_titre_chapitre = {
     'tec_1d': 'TEC Mouvements simples',
     'tec_3d': 'TEC Mouvements complexes',
     'tec_jeq': 'Inertie équivalente',
-    'tec_vehicule': 'TEC Véhicules'}
+    'tec_vehicule': 'TEC Véhicules',
+    'num_ia' : 'Apprentissage automatisé'}
 
 
 dico_comp={
@@ -253,6 +254,9 @@ def make_dico_from_tex_file(root, file):
     dico['raw_sujet']="https://github.com/xpessoles/ALL_PDF/raw/main/PDF/"+dico['fichier'][:-4]+'_Sujet.pdf'
     dico['raw_corrige']="https://github.com/xpessoles/ALL_PDF/raw/main/PDF/"+dico['fichier'][:-4]+'_Corrige.pdf'
 
+    dico['blob_sujet']="https://github.com/xpessoles/ALL_PDF/blob/main/PDF/"+dico['fichier'][:-4]+'_Sujet.pdf'
+    dico['blob_corrige']="https://github.com/xpessoles/ALL_PDF/blob/main/PDF/"+dico['fichier'][:-4]+'_Corrige.pdf'
+
     return dico
 
 
@@ -386,11 +390,11 @@ def write_activite(activite,liste_dico_file,fid,chapitre) :
         fid.write("| :-------------- | :---: | :-----: | :------: | \n")
         for td in liste_td :
             fid.write("| "+td['titre']+ " | ")
-            fid.write("[:fontawesome-solid-file-pdf:]("+td['raw_sujet']+") | ")
+            fid.write("[:fontawesome-solid-file-pdf:]("+td['blob_sujet']+") | ")
             if td['corrige'] :
-                fid.write("[:fontawesome-solid-file-pdf:]() | ")
+                fid.write("[:fontawesome-solid-file-pdf:]("+td['blob_corrige']+") | ")
             else:
-                fid.write("[:fontawesome-regular-file-pdf:](http://xpessoles-cpge.fr/pdf/"+td['fichier'][:-4]+"_Corrige.pdf) | ")
+                fid.write("[:fontawesome-regular-file-pdf:]("+td['blob_corrige']+") | ")
 
         fid.write("[:material-github:]("+td["lien_git"]+") | \n")
 

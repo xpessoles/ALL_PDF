@@ -228,7 +228,12 @@ def make_dico_from_tex_file(root, file):
     #fid = open(fich,'r', encoding="utf8")
     #line = fid.readline()
     #fid.close()
+    dico['raw_sujet']="https://github.com/xpessoles/ALL_PDF/raw/main/PDF/"+dico['comp']+"_"+dico['fichier'][:-4]+'_Sujet.pdf'
+    dico['raw_corrige']="https://github.com/xpessoles/ALL_PDF/raw/main/PDF/"+dico['comp']+"_"+dico['fichier'][:-4]+'_Corrige.pdf'
 
+    dico['blob_sujet']="https://github.com/xpessoles/ALL_PDF/blob/main/PDF/"+dico['comp']+"_"+dico['fichier'][:-4]+'_Sujet.pdf'
+    dico['blob_corrige']="https://github.com/xpessoles/ALL_PDF/blob/main/PDF/"+dico['comp']+"_"+dico['fichier'][:-4]+'_Corrige.pdf'
+    print(dico)
     return dico
 
 def verif(root,file):
@@ -419,7 +424,9 @@ def make_nav(dico):
     fid.write('    - activites/index.md \n')
 
     for c in chap:
-        fid.write('    - '+c+' : activites/'+c+'.md\n')
+        ## On ne met que les comp ou il y a des exos
+        if compte_activite(c,tex_liste)>0 :
+            fid.write('    - '+c+' : activites/'+c+'.md\n')
     fid.close()
 
     print("Modifier le fichier mkdocs.yml")
@@ -461,11 +468,11 @@ def creation_fichiers_activites(chap_comp,liste_dico_act):
         fid.write("| :-------------- | :---: | :-----: | :------: | \n")
         for act in liste_act :
             fid.write("| "+act['fichier'][:-4]+ " | ")
-            fid.write("[:fontawesome-solid-file-pdf:](http://xpessoles-cpge.fr/pdf/"+act['comp']+"_"+act['fichier'][:-4]+"_Sujet.pdf) | ")
+            fid.write("[:fontawesome-solid-file-pdf:]("+act['blob_sujet']+") | ")
             if act['corrige'] :
-                fid.write("[:fontawesome-solid-file-pdf:](http://xpessoles-cpge.fr/pdf/"+act['comp']+"_"+act['fichier'][:-4]+"_Corrige.pdf) |")
+                fid.write("[:fontawesome-solid-file-pdf:]("+act['blob_corrige']+") |")
             else:
-                fid.write("[:fontawesome-regular-file-pdf:](http://xpessoles-cpge.fr/pdf/"+act['comp']+"_"+act['fichier'][:-4]+"_Corrige.pdf) | ")
+                fid.write("[:fontawesome-regular-file-pdf:]("+act['blob_corrige']+") | ")
 
 
             fid.write("[:material-github:]("+act['chemin_git']+") |  \n")
@@ -487,9 +494,9 @@ def creation_fichiers_activites(chap_comp,liste_dico_act):
 
 tex_liste = make_tex_list(chemins)
 #save_liste_tex(tex_liste,PC)
-#nav = make_nav(tex_liste)
+nav = make_nav(tex_liste)
 
-#creation_fichiers_activites(nav,tex_liste)
+creation_fichiers_activites(nav,tex_liste)
 def compte_activite(comp,tex_liste):
     cpt = 0
     for d in tex_liste :
@@ -499,4 +506,5 @@ def compte_activite(comp,tex_liste):
 
 for k,v in dico_comp.items():
     cc = compte_activite(k,tex_liste)
-    print("| "+k+" | "+v+" | __"+str(cc)+"__ |")
+    if cc>0 :
+        print("| "+k+" | "+v+" | __"+str(cc)+"__ |")
