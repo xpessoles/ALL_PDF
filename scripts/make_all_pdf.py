@@ -13,7 +13,7 @@ import pickle
  # Préciser le PC surlquel ont été compilés les fichiers ?
 ##
 
-PC = "perso"
+
 # On fait la liste des .tex d'un dossier.
 # On crée pour chaque .tex un dictionnaire :
 # {fichier:str, time : os.path.getmtime
@@ -216,58 +216,74 @@ def load_liste_tex(machine) :
     return data
 
 
-def go(machine):
-    # compilation UNIQUEMENT des fichiers modifiés
-    old_tex_file = load_liste_tex(machine)
-    new_tex_file = make_tex_list(chemins,machine)
-    i=0
-    for d_new in new_tex_file :
-        # On cherche si le fichier existe dans le fichier_sauvegarder
 
-        if d_new not in old_tex_file :
-
-            compile_file(d_new)
-        ### AREVOIR SAUVEGARDE A CHAQUE ITeRATION CI DESSOUS CA MARCHE PAS
-
-        #On sauve la liste à chaque itération ### TEST ####
-        save_liste_tex(new_tex_file[:i])
-        old_tex_file = load_liste_tex()
-        i=i+1
 
 def diff_tex_file(machine):
     # affichage des fichiers modifiés
+    # Donne la liste des dictionnaire des fichiers à recompiler
     old_tex_file = load_liste_tex(machine)
     new_tex_file = make_tex_list(chemins)
+    print("SAV : ",len(old_tex_file)," NOW :",len(old_tex_file))
     i=0
+    diff_tex = []
     for d_new in new_tex_file :
-        # On cherche si le fichier existe dans le fichier_sauvegarder
-        if d_new not in old_tex_file :
-            print(d_new)
+        # On cherche le ditionnaire correspondant en regardant le full_chemin.
+        for d_old in old_tex_file :
+            if d_old['full_chemin'] == d_new['full_chemin'] :
+                # Si les timestamp sont différents, on stocke
+                if d_old['last_modif'] != d_new['last_modif']:
+                    diff_tex.append(d_new)
+
+    print(diff_tex)
+    return (diff_tex)
 
 
 
+def make_all_pdf(PC):
+    # Création de TOUS les PDF et Reecriture du point de sauvegarde
 
-
-def make_all_pdf():
-    # Création de tous les PDF
     tex_liste = make_tex_list(chemins)
-    liste_pdf = os.listdir("../PDF")
+    #liste_pdf = os.listdir("../PDF")
 
     for d in tex_liste :
-
+        print(d['fichier'])
         f_pdf_1 = d['fichier'][:-4]+'_Sujet.pdf'
         f_pdf_2 = d['fichier'][:-4]+'_Corrige.pdf'
-        print(f_pdf_1,f_pdf_2)
+        #print(f_pdf_1,f_pdf_2)
         #return f_pdf,liste_pdf
-        if (f_pdf_1 not in liste_pdf) and (f_pdf_2 not in liste_pdf) :
+        #if (f_pdf_1 not in liste_pdf) and (f_pdf_2 not in liste_pdf) :
             #pass
+        compile_file(d)
+    save_liste_tex(tex_liste,PC)
+
+
+def go(machine):
+    # compilation UNIQUEMENT des fichiers modifiés
+    diff_tex = diff_tex_file(machine)
+    while diff_tex :
+        for d in diff_tex :
+            print(d['fichier'])
+            f_pdf_1 = d['fichier'][:-4]+'_Sujet.pdf'
+            f_pdf_2 = d['fichier'][:-4]+'_Corrige.pdf'
 
             compile_file(d)
 
+        new_tex_file = make_tex_list(chemins)
+        save_liste_tex(new_tex_file,machine)
+        diff_tex = diff_tex_file(machine)
 
-make_all_pdf()
 
-#diff_tex_file(machine)
-#go()
-#a = make_tex_list(chemins)
-#save_liste_tex(a)
+PC = "perso"
+go(PC)
+#make_all_pdf(PC)
+
+# SAUVEGARDE DES FICHIERS TEX
+#tex_liste = make_tex_list(chemins)
+#save_liste_tex(tex_liste,PC)
+
+
+
+#diff_tex_file(PC)
+# go()
+# a = make_tex_list(chemins)
+# save_liste_tex(a)
