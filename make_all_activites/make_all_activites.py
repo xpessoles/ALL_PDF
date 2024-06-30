@@ -233,7 +233,7 @@ def make_dico_from_tex_file(root, file):
 
     dico['blob_sujet']="https://github.com/xpessoles/ALL_PDF/blob/main/PDF/"+dico['comp']+"_"+dico['fichier'][:-4]+'_Sujet.pdf'
     dico['blob_corrige']="https://github.com/xpessoles/ALL_PDF/blob/main/PDF/"+dico['comp']+"_"+dico['fichier'][:-4]+'_Corrige.pdf'
-    print(dico)
+    #print(dico)
     return dico
 
 def verif(root,file):
@@ -255,6 +255,14 @@ def verif(root,file):
         if (t in root) or (t in file) :
             return False
     return True
+
+def compte_activite(comp,tex_liste):
+    cpt = 0
+    for d in tex_liste :
+        if d['comp'] == comp.replace('-','_') :
+            cpt = cpt+1
+    return cpt
+
 
 def compile_file(dict):
 
@@ -380,9 +388,6 @@ def diff_tex_file(machine):
             print(d_new)
 
 
-
-
-
 def make_all_pdf():
     # Création de tous les PDF
     tex_liste = make_tex_list(chemins)
@@ -397,7 +402,6 @@ def make_all_pdf():
         if (f_pdf_1 not in liste_pdf) and (f_pdf_2 not in liste_pdf) :
             #pass
             compile_file(d)
-
 
 
 def make_nav(dico):
@@ -431,6 +435,9 @@ def make_nav(dico):
 
     print("Modifier le fichier mkdocs.yml")
     return chap
+
+
+
 
 def creation_fichiers_activites(chap_comp,liste_dico_act):
     """
@@ -477,15 +484,8 @@ def creation_fichiers_activites(chap_comp,liste_dico_act):
 
             fid.write("[:material-github:]("+act['chemin_git']+") |  \n")
 
-
         fid.write("\n")
-
-
-
         fid.close()
-
-
-
 
 
 
@@ -497,12 +497,7 @@ tex_liste = make_tex_list(chemins)
 nav = make_nav(tex_liste)
 
 creation_fichiers_activites(nav,tex_liste)
-def compte_activite(comp,tex_liste):
-    cpt = 0
-    for d in tex_liste :
-        if d['comp'] == comp.replace('-','_') :
-            cpt = cpt+1
-    return cpt
+
 
 for k,v in dico_comp.items():
     cc = compte_activite(k,tex_liste)
