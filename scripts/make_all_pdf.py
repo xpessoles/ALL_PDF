@@ -79,7 +79,11 @@ def make_dico_from_tex_file(root, file):
         d = eval(d)
         for k,v in d.items():
             dico[k]=v
+    dico['sujet'] = dico['comp']+"_"+dico['fichier'][:-4]+'_Sujet.pdf'
+    dico['corrige'] = dico['comp']+"_"+dico['fichier'][:-4]+'_Corrige.pdf'
 
+    dico['lien_sujet']="https://xpessoles-cpge.fr/pdf/"+dico['sujet']
+    dico['lien_corrige']="https://xpessoles-cpge.fr/pdf/"+dico['corrige']
     return dico
 
 def verif(root,file):
@@ -273,14 +277,33 @@ def go(machine):
         diff_tex = diff_tex_file(machine)
 
 
+def get_cahpitre_liste(tex_liste):
+    # Création de la liste des chapitres
+    dico_chap = {}
+    for d in tex_liste :
+        if d['chapitre'] not in dico_chap :
+           dico_chap[d["chapitre"]]=1
+        else :
+            dico_chap[d["chapitre"]]+=1
+    return list(dico_chap.keys())
+
+
+def write_md_chapitre():
+    """
+    ecrire un fichier md pour un chapitre donné
+    """
+
+
+
 PC = "perso"
-go(PC)
+#go(PC)
 #make_all_pdf(PC)
 
 # SAUVEGARDE DES FICHIERS TEX
 #tex_liste = make_tex_list(chemins)
 #save_liste_tex(tex_liste,PC)
 
+tex_liste = make_tex_list(chemins)
 
 
 #diff_tex_file(PC)

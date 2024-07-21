@@ -47,7 +47,7 @@ dico_titre_chapitre = {
     'slci_rapidite': 'Rapidité des systèmes',
     'slci_revisions': 'SLCI Révisions',
     'slci_rp': 'Correcteur à retard de phase',
-    'slci_stabilite': 'Stablité des systèmes',
+    'slci_stabilite': 'Stabilité des systèmes',
     'slci_synthese': 'SLCI Synthèse',
     'stat_frot': 'Frottement sec',
     'stat_mam': 'Modélisation des AM',
@@ -257,6 +257,12 @@ def make_dico_from_tex_file(root, file):
     dico['blob_sujet']="https://github.com/xpessoles/ALL_PDF/blob/main/PDF/"+dico['fichier'][:-4]+'_Sujet.pdf'
     dico['blob_corrige']="https://github.com/xpessoles/ALL_PDF/blob/main/PDF/"+dico['fichier'][:-4]+'_Corrige.pdf'
 
+    dico['sujet'] = dico['fichier'][:-4]+'_Sujet.pdf'
+    dico['corrige'] = dico['fichier'][:-4]+'_Corrige.pdf'
+
+    dico['lien_sujet']="https://xpessoles-cpge.fr/pdf/"+dico['sujet']
+    dico['lien_corrige']="https://xpessoles-cpge.fr/pdf/"+dico['corrige']
+
     return dico
 
 
@@ -347,7 +353,7 @@ def make_page_chapitre(liste_dico_file,dico_titre_chapitre,chapitre):
     write_comp(liste_dico_file,fid,chapitre)
     fid.write('---\n\n')
 
-
+    fid.write('[comment]: <> (Généré automatiquement par ALL_PDF/make_markdown.py, creation_fichiers_activites)\n\n')
 
     ## Le cours
     write_activite('cours',liste_dico_file,fid,chapitre)
@@ -390,11 +396,11 @@ def write_activite(activite,liste_dico_file,fid,chapitre) :
         fid.write("| :-------------- | :---: | :-----: | :------: | \n")
         for td in liste_td :
             fid.write("| "+td['titre']+ " | ")
-            fid.write("[:fontawesome-solid-file-pdf:]("+td['blob_sujet']+") | ")
+            fid.write("[:fontawesome-solid-file-pdf:]("+td['lien_sujet']+") | ")
             if td['corrige'] :
-                fid.write("[:fontawesome-solid-file-pdf:]("+td['blob_corrige']+") | ")
+                fid.write("[:fontawesome-solid-file-pdf:]("+td['lien_corrige']+") | ")
             else:
-                fid.write("[:fontawesome-regular-file-pdf:]("+td['blob_corrige']+") | ")
+                fid.write("[:fontawesome-regular-file-pdf:]("+td['lien_corrige']+") | ")
 
         fid.write("[:material-github:]("+td["lien_git"]+") | \n")
 
@@ -446,6 +452,7 @@ for chapitre in liste_chapitres :
     print(chapitre)
     make_page_chapitre(liste_dico_file,dico_titre_chapitre,chapitre)
 
+#make_page_chapitre('slci_stabilite')
 
 """chap = make_nav(a)
 for c in chap :
