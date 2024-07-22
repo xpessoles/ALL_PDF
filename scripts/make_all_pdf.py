@@ -79,11 +79,18 @@ def make_dico_from_tex_file(root, file):
         d = eval(d)
         for k,v in d.items():
             dico[k]=v
-    dico['sujet'] = dico['comp']+"_"+dico['fichier'][:-4]+'_Sujet.pdf'
-    dico['corrige'] = dico['comp']+"_"+dico['fichier'][:-4]+'_Corrige.pdf'
+
+    dico['sujet'] = dico['fichier'][:-4]+'_Sujet.pdf'
+    dico['corrige'] = dico['fichier'][:-4]+'_Corrige.pdf'
+
+
+    if ('type' in line) and (dico["type"] == 'cours') :
+        dico['sujet'] = d["chapitre"]+"_"+dico['fichier'][:-4]+'.pdf'
+        dico['corrige'] = d["chapitre"]+"_"+dico['fichier'][:-4]+'.pdf'
 
     dico['lien_sujet']="https://xpessoles-cpge.fr/pdf/"+dico['sujet']
     dico['lien_corrige']="https://xpessoles-cpge.fr/pdf/"+dico['corrige']
+
     return dico
 
 def verif(root,file):
@@ -92,8 +99,9 @@ def verif(root,file):
     """
     test = ["old","QCM","Headings",
     "QCM","OLD","xx","TODO","macros",
-    "Cours",
-    "cours","Old",
+    #"Cours",
+     #"cours",
+    "Old",
     "Cy_01_Ch_01_Application",
     "Cy_01_Ch_02_05_App_01",
     "Schema_1_entree_2F_R",
@@ -127,7 +135,7 @@ def compile_file(dict):
 
     # Compilation du sujet
     # On copie la base
-    dest = dict["fichier"] # fichier.tex
+    dest = dict["sujet"] # fichier.tex
     dest = dest[:-4]+"_Sujet.tex"
     shutil.copy("base.tex",dest)
     print("==================================")
@@ -277,7 +285,7 @@ def go(machine):
         diff_tex = diff_tex_file(machine)
 
 
-def get_cahpitre_liste(tex_liste):
+def get_chapitre_liste(tex_liste):
     # Création de la liste des chapitres
     dico_chap = {}
     for d in tex_liste :
@@ -288,10 +296,7 @@ def get_cahpitre_liste(tex_liste):
     return list(dico_chap.keys())
 
 
-def write_md_chapitre():
-    """
-    ecrire un fichier md pour un chapitre donné
-    """
+
 
 
 
@@ -304,8 +309,14 @@ PC = "perso"
 #save_liste_tex(tex_liste,PC)
 
 tex_liste = make_tex_list(chemins)
+cours_liste = []
+for d in tex_liste :
+    if "Cours" in d["fichier"] or "cours" in d["fichier"]:
+        cours_liste.append(d)
 
-
+for d in cours_liste :
+    print(d['sujet'])
+    compile_file(d)
 #diff_tex_file(PC)
 # go()
 # a = make_tex_list(chemins)

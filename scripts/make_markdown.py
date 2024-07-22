@@ -258,10 +258,10 @@ def make_dico_from_tex_file(root, file):
     dico['blob_corrige']="https://github.com/xpessoles/ALL_PDF/blob/main/PDF/"+dico['fichier'][:-4]+'_Corrige.pdf'
 
     dico['sujet'] = dico['fichier'][:-4]+'_Sujet.pdf'
-    dico['corrige'] = dico['fichier'][:-4]+'_Corrige.pdf'
+    dico['corrige_pdf'] = dico['fichier'][:-4]+'_Corrige.pdf'
 
     dico['lien_sujet']="https://xpessoles-cpge.fr/pdf/"+dico['sujet']
-    dico['lien_corrige']="https://xpessoles-cpge.fr/pdf/"+dico['corrige']
+    dico['lien_corrige']="https://xpessoles-cpge.fr/pdf/"+dico['corrige_pdf']
 
     return dico
 
@@ -402,7 +402,7 @@ def write_activite(activite,liste_dico_file,fid,chapitre) :
             else:
                 fid.write("[:fontawesome-regular-file-pdf:]("+td['lien_corrige']+") | ")
 
-        fid.write("[:material-github:]("+td["lien_git"]+") | \n")
+            fid.write("[:material-github:]("+td["lien_git"]+") | \n")
 
     fid.write("\n")
 
@@ -448,9 +448,11 @@ liste_dico_file = make_tex_list(chemins)
 
 #make_page_chapitre(liste_dico_file,dico_titre_chapitre,"slci_laplace")
 
-for chapitre in liste_chapitres :
-    print(chapitre)
-    make_page_chapitre(liste_dico_file,dico_titre_chapitre,chapitre)
+
+## Réalisation des fichiers .md
+# for chapitre in liste_chapitres :
+#     print(chapitre)
+#     make_page_chapitre(liste_dico_file,dico_titre_chapitre,chapitre)
 
 #make_page_chapitre('slci_stabilite')
 
