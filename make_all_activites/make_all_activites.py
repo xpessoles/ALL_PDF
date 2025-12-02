@@ -164,7 +164,7 @@ def make_tex_list(chemins:[str]):
 
 def make_pdf_list(chemins:[str]):
     """
-    Réalisation de la liste de tous les fichier tex.
+    Réalisation de la liste de tous les fichier pdf.
     REnvoie une liste de dictionnaires :
     dico = {'fichier':file,'last_modif':modif:....}
     """
